@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Circles</title>
+
+
+    <!-- Load the Paper.js library -->
+    <script type="text/javascript" src="paper-full.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="circles.css">
+
+    <!-- Define inlined PaperScript associate it with myCanvas -->
+    <script type="text/paperscript" canvas="myCanvas">
+
+        var keyData = {
+            a:{
+                color: "purple",
+                sound:new Howl({
+                    src: ['sounds/Yee.mp3']
+                    })
+                 },
+            s:{
+                color:"green",
+                sound: new Howl({
+                src: ['sounds/Oof.mp3']
+                 })
+            },
+            d:{
+                color: "yellow",
+                sound: new Howl({
+                    src: ['sounds/Minecraft.mp3']
+                })
+            },
+            f:{
+                color: "blue",
+                sound: new Howl({
+                    src: ['sounds/dangSon.mp3']
+                })
+            },
+            m:{
+                color:"pink",
+                sound: new Howl({
+                    src: ['sounds/debussy.mp3']
+                })
+            },
+            n:{
+                color:"white",
+                sound: new Howl({
+                    src: ['sounds/tchaiTea.mp3']
+                })
+            }
+        }
+            
+           
+
+        var circles = [];
+
+       function onKeyDown(event) {
+        if(keyData[event.key]){
+            var maxPoint = new Point(view.size.width, view.size.height);
+        var randomPoint = Point.random();
+        var point = maxPoint * randomPoint;
+        var  newCircle = new Path.Circle(point,500);
+        newCircle.fillColor = keyData[event.key].color;
+        keyData[event.key].sound.play();
+        //push works by inserting the last element called, which is why
+        //fillColor was coded on a separate line so that we can pass in
+        // newCircle instead of "orange"
+        circles.push(newCircle);
+            }
+        
+
+        }
+        function onFrame(event){
+            for(var i = 0; i < circles.length; i++){
+                circles[i].fillColor.hue += 1;
+                circles[i].scale(.9);
+                if(circles[i].area < 1){
+                circles[i].remove(); // remove the circle from the canvas
+                circles.splice(i, 1); // remove the circle from the array
+                console.log(circles);
+                }
+            }
+        }
+        /*var sound = new Howl({
+            src: ['sound.mp3']
+            });
+            
+            sound.play();*/
+    </script>
+</head>
+
+
+<body>
+    <canvas id="myCanvas" resize></canvas>
+</body>
+
+</html>
